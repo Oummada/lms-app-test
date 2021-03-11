@@ -112,6 +112,7 @@ class Home extends React.Component {
 
       let nStudent = new StudentModel(
 
+        0,
         this.state.nom,
         this.state.pren,
         this.state.avater,
@@ -129,9 +130,11 @@ class Home extends React.Component {
 
       // ajouter student a la liste 
 
+
       // this.state.list_student_data.push(nStudent);
 
       let newStudentList = this.state.list_student_data;
+     
 
       newStudentList.push(nStudent);
 
@@ -144,35 +147,51 @@ class Home extends React.Component {
 
       // ajouter l'etudiant a la partie serveur (firebase) en utilisant axios 
 
-      axios.post("students.json", nStudent).then((response)=>{ 
-        console.log(response)
-      })
+       
+      const data_student = {
+        nom:nStudent.nom,
+        pren:nStudent.pren,
+        email:nStudent.email,
+        avatar:nStudent.avatar,
+      }
+      axios.post("students.json",data_student).then((response)=>{
+
+         let id_new_student = response.data.name; 
+
+
+         // chercher l'etudiant qui a l'id =0 
+
+         let newListStudent = this.state.list_student_data; 
+         newListStudent.forEach( s=>{
+           if(s.id==0){
+             s.id = id_new_student ; 
+           }
+         })
+
+
+
+        
+        })
+    
+
+  
 
 
 
 
 
 
-    };
-
-  };
 
 
 
 
 
+      }
 
-
-
-
-
-
-
-
-
+        };
 }
 
 
 
 
-export default Home; 
+ export default Home; 
