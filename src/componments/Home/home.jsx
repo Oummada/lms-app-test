@@ -1,22 +1,23 @@
 import "./home.css"
 import ListStudent from "../Students/list-student"
 import React from 'react'
-import StudentModel from"../../models/student.model"
+import StudentModel from "../../models/student.model"
 import NewStudent from "../Students/new-student";
 import Form from "./form"
-class Home extends React.Component{
+import axios from "../../utils/axios";
+class Home extends React.Component {
 
-  constructor(){
-    
+  constructor() {
+
     // call the constructor of the parent class React.component 
     super();
     //data
-    this.state= {
+    this.state = {
 
-      nom:"",
-      pren:"",
-      avatar:"",
-      email:"",
+      nom: "",
+      pren: "",
+      avatar: "",
+      email: "",
       list_student_data: [],
     };
     console.log(this.state);
@@ -38,28 +39,28 @@ class Home extends React.Component{
   //   };
   //   console.log(this.state.student);
   // }
-  render(){
+  render() {
     return (
       <>
-          <h1 className="text-center text-white mt-5">
-        🧑‍🎓 LMS-APP : <span className="text-warning">Home</span> 🏠
+        <h1 className="text-center text-white mt-5">
+          🧑‍🎓 LMS-APP : <span className="text-warning">Home</span> 🏠
       </h1>
-           
 
-           <div className="container-fluid d-flex p-4">
-         < NewStudent
-         
-         handleChange ={this.handleChange}
-         handleSubmit={this.addStudent}
-         
-         />
 
-         
-         <ListStudent  dataList= {this.state.list_student_data}/>
+        <div className="container-fluid d-flex p-4">
+          < NewStudent
+
+            handleChange={this.handleChange}
+            handleSubmit={this.addStudent}
+
+          />
+
+
+          <ListStudent dataList={this.state.list_student_data} />
 
         </div>
 
-       </>
+      </>
     );
   }
 
@@ -69,87 +70,93 @@ class Home extends React.Component{
     let nameInput = event.target.name;
 
     this.setState({
-      [nameInput]:valueInput
+      [nameInput]: valueInput
     })
-    console.log(valueInput,nameInput);
+    console.log(valueInput, nameInput);
   };
 
   addStudent = (event) => {
 
-   // ne pas acctualiser la page 
+    // ne pas acctualiser la page 
 
-  event.preventDefault();
+    event.preventDefault();
 
-  // creer un objet de type student 
+    // creer un objet de type student 
 
-  let nStudent = new StudentModel (
-    
-
-    this.state.nom,
-    this.state.pren,
-    this.state.avatar,
-    this.state.email,
-    false
-  ); 
+    let nStudent = new StudentModel(
 
 
-  //ne pas actualiser la page 
+      this.state.nom,
+      this.state.pren,
+      this.state.avatar,
+      this.state.email,
+      false
+    );
 
 
-  event.preventDefault();
+    //ne pas actualiser la page 
 
 
-  // vider les inputs formulaire
-
-  event.target.reset();
-
-  //validation du formilaire 
-
-  if(this.state.nom=="" || this.state.pren==""  || this.state.avatar==""  || this.state.email==""){
-    alert("veuillez ramplire les champs du formulaire")
-  } else {
-
-  let nStudent = new StudentModel (
-    
-    this.state.list_student_data.length+1,
-    this.state.nom,
-    this.state.pren,
-    this.state.avater,
-    this.state.email,
-    false
-  ); 
-  // vider les states 
-    this.setState({
-      nom:"",
-      pren:"",
-      avatar:"",
-      email:"",
-    })
-    
-
-  // ajouter student a la liste 
-
-  // this.state.list_student_data.push(nStudent);
-
-  let newStudentList = this.state.list_student_data;
-
-  newStudentList.push(nStudent);
-
-     this.setState(
-    {
-      list_student_data : newStudentList
-    }
-    )
+    event.preventDefault();
 
 
+    // vider les inputs formulaire
 
-  console.log(nStudent);
+    event.target.reset();
 
+    //validation du formilaire 
+
+    if (this.state.nom == "" || this.state.pren == "" || this.state.avatar == "" || this.state.email == "") {
+      alert("veuillez ramplire les champs du formulaire")
+    } else {
+
+      let nStudent = new StudentModel(
+
+        this.state.nom,
+        this.state.pren,
+        this.state.avater,
+        this.state.email,
+        false
+      );
+      // vider les states 
+      this.setState({
+        nom: "",
+        pren: "",
+        avatar: "",
+        email: "",
+      })
+
+
+      // ajouter student a la liste 
+
+      // this.state.list_student_data.push(nStudent);
+
+      let newStudentList = this.state.list_student_data;
+
+      newStudentList.push(nStudent);
+
+      this.setState(
+        {
+          list_student_data: newStudentList,
+
+        }
+      );
+
+      // ajouter l'etudiant a la partie serveur (firebase) en utilisant axios 
+
+      axios.post("students.json", nStudent).then((response)=>{ 
+        console.log(response)
+      })
+
+
+
+
+
+
+    };
 
   };
 
-  };
-  
 
 
 
@@ -160,12 +167,12 @@ class Home extends React.Component{
 
 
 
-     
-    
-    
+
+
+
 }
 
 
 
 
-export default Home ; 
+export default Home; 

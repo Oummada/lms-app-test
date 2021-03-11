@@ -19,9 +19,9 @@ export default function ListStudent(props) {
         <div className="p-5 d-flex flex-wrap justify-content-center ">
 
               {
-                props.dataList.map(s => <Student key={s.id} data={s}/>)
+                props.dataList.map((s,index) => <Student key={index} data={s} />)
               } 
-
+ 
 
 
           {/* data : les infos des l'etudiant 
@@ -29,17 +29,7 @@ export default function ListStudent(props) {
           <Student data={props.dataList[1]}/>
           <Student data={props.dataList[2]}/>
     */}
-    {
-
-      // for (lket i=0 ; i < props.datalist.length; i++ {
-        // <Student data={props.dataList[i]}/>
-        //}
-
-
-         props.dataList.map( s=> <Student data={s} />) 
-
-      
-    }
+    
         </div>
   </div>
   );
